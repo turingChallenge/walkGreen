@@ -14,13 +14,9 @@ for (i in 1:nc.N) {
                    (newcastle.coords[i,2] - parks.coords [,2])^2)
   access.index [i] <- new.pop$All.usual.residents [i] * sum(exp(-e.dist / 1000))
 }
+rank.access <- order(access.index)
 
 ##  Gini access
-
-
-
-access.index
-##
-newcastle <- readOGR(dsn = '../Data/newcastle lsoa', 
-                     layer='nc lsoa') #England and Wales technically; huge number of LSOAs so seems right
-newcastle 
+access.stats <- data.frame(lsoa = newcastle$lsoa11cd, min.dist, access.index, 
+                           rank.access)
+write.csv(access.stats, file = '../Data/access stats.csv')
