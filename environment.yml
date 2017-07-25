@@ -2,13 +2,14 @@ name: walkGreen
 
 channels:
 - conda-forge
+- win-64
 - r
 
 dependencies:
 - python=3.5
 # r dependencies
 - zeromq
-- readline
+# - readline
 - pcre
 - r
 - r-essentials
