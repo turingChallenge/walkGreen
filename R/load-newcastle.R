@@ -26,7 +26,17 @@ plot(lad, add = T)
 write_sf(l, "../data/od-lines.geojson")
 
 g_poly = st_transform(g_poly, 4326)
-g_
+g_point = st_transform(g_point, 4326)
 g_poly_lad = g_poly[lad,]
+g_point_lad = g_point[lad,]
 plot(g_poly_lad, add = T, col = "green")
+plot(g_point_lad, add = T, col = "red")
 write_sf(g_poly_lad, "../data/parks.geojson")
+write_sf(g_point_lad, "../data/park-points.geojson")
+
+g_walk = aggregate(l["foot"], g_poly_lad, sum, drop = FALSE)
+row.names(g_walk)
+g_walk$gml_id = g_poly_lad$gml_id
+plot(g_walk, add = T)
+g_df = st_set_geometry(g_poly_lad, NULL)
+g_df = left_join(g_df, g_walk)
