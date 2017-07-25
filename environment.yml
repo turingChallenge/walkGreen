@@ -1,0 +1,21 @@
+name: walkGreen
+
+channels:
+- conda-forge
+- r
+
+dependencies:
+- python=3.5
+# r dependencies
+- zeromq
+- readline
+- pcre
+- r
+- r-essentials
+
+# python dependencies
+- numpy
+- pandas
+- pip
+- jupyter
+- iris
