@@ -11,6 +11,8 @@ library(sf)
 newcastle <- readOGR(dsn = '../Data/newcastle lsoa', 
                      layer='nc lsoa') #England and Wales technically; huge number of LSOAs so seems right
 new.proj <- proj4string(newcastle)
+newcastle.coords <- coordinates(newcastle)
+
 
 new.pop <- read.csv('../Data/newcastle lsoa/newcastle pop.csv', 
                     stringsAsFactors = F)
@@ -24,5 +26,4 @@ nc.parks <- st_transform(nc.parks, new.proj)
 
 ##  Extract coords for parks
 parks.coords <- st_coordinates(nc.parks)
-newcastle.coords <- coordinates(newcastle)
 
