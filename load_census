@@ -1,14 +1,14 @@
 output areas - TYPE299
 msoa - TYPE297
+lsoa - TYPE298
 newcastle district - 1946157065TYPE
 
 
 NM_665_1 - population
 NM_548_1 - access to car or van
+NM_568_1 - modes to work
 
-
-https://www.nomisweb.co.uk/api/v01/dataset/NM_665_1.data.csv?geography=1946157065TYPE297&time=latest&select=geography_code,obs_value,cell_name
-
+https://www.nomisweb.co.uk/api/v01/dataset/NM_548_1.data.csv?geography=1946157065TYPE298&time=latest
 
 Geometry codes
 https://www.nomisweb.co.uk/api/v01/dataset/NM_144_1/geography/TYPE.def.html
