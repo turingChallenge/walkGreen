@@ -8,3 +8,7 @@ NM_548_1 - access to car or van
 
 
 https://www.nomisweb.co.uk/api/v01/dataset/NM_665_1.data.csv?geography=1946157065TYPE297&time=latest&select=geography_code,obs_value,cell_name
+
+
+Geometry codes
+https://www.nomisweb.co.uk/api/v01/dataset/NM_144_1/geography/TYPE.def.html
