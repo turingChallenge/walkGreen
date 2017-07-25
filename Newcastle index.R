@@ -8,17 +8,17 @@ lapply(x, library, character.only = TRUE) # load the required packages; again th
 
 ##  Load lsoa centroid files 
 library(sf)
-newcastle <- readOGR(dsn = '../Data/newcastle lsoa', 
+newcastle.df <- readOGR(dsn = '../Data/newcastle lsoa', 
                      layer='nc lsoa') #England and Wales technically; huge number of LSOAs so seems right
-new.proj <- proj4string(newcastle)
-newcastle.coords <- coordinates(newcastle)
+new.proj <- proj4string(newcastle.df)
+newcastle.coords <- coordinates(newcastle.df)
 
 
 new.pop <- read.csv('../Data/newcastle lsoa/newcastle pop.csv', 
                     stringsAsFactors = F)
 names(new.pop)[1] <- 'lsoa11cd'
 new.pop$lsoa11cd <- substr(new.pop$lsoa11cd, 1, 9)
-newcastle <- head(merge(newcastle, new.pop, by = 'lsoa11cd'))
+newcastle <- merge(newcastle.df, new.pop, by = 'lsoa11cd')
 
 ##  load in parks file 
 nc.parks <- read_sf('../Data/park-points.geojson')
