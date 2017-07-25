@@ -12,7 +12,7 @@ summary(g_point)
 summary(g_poly)
 summary(g$geometry)
 plot(g[1:9,])
-
+unique(g_poly$function.)
 
 # analysis
 g_poly_large = g_poly %>% 
