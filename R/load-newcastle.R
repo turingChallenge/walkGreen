@@ -34,9 +34,62 @@ plot(g_point_lad, add = T, col = "red")
 write_sf(g_poly_lad, "../data/parks.geojson")
 write_sf(g_point_lad, "../data/park-points.geojson")
 
-g_walk = aggregate(l["foot"], g_poly_lad, sum, drop = FALSE)
+# buffer geographic data
+devtools::install_github("ropensci/stplanr", ref = "sfr")
+library(stplanr)
+l_buff_200 = geo_projected(l, st_buffer, dist = 200)
+write_sf(l_buff_200, "../data/l_buff_200.geojson")
+l_buff_500 = geo_projected(l, st_buffer, dist = 500)
+write_sf(l_buff_500, "../data/l_buff_500.geojson")
+plot(l_buff_500$geometry)
+g_walk = aggregate(l["foot"], g_poly_lad, sum, drop = F)
+g_walk200 = aggregate(l_buff_200["foot"], g_poly_lad, sum, drop = F)
+g_walk500 = aggregate(l_buff_500["foot"], g_poly_lad, sum, drop = F)
+g_walk_cent = st_centroid(g_walk)
+g_joined = st_join(g_poly_lad, g_walk)
+nrow(g_joined)
+names(g_joined)
+g_all = left_join(x = g_poly_lad, y = st_set_geometry(g_joined[c("gml_id", "foot")], value = NULL))
+g = select(g_all, gml_id, walk_00 = foot)
+g_joined = st_join(g_poly_lad, l_buff_200) %>% 
+  group_by(gml_id) %>% 
+  summarise(foot = sum(foot))
+g_all = left_join(x = g, y = st_set_geometry(g_joined[c("gml_id", "foot")], value = NULL))
+g$walk200 = g_all$foot
+
+g_joined = st_join(g_poly_lad, l_buff_500) %>% 
+  group_by(gml_id) %>% 
+  summarise(foot = sum(foot))
+g_all = left_join(x = g, y = st_set_geometry(g_joined[c("gml_id", "foot")], value = NULL))
+g$walk500 = g_all$foot
+
+plot(g$walk_00, g$walk200)
+tmap_mode("view")
+qtm(st_union(l_buff_500)) +
+  qtm(g, "walk500") +
+  tm_shape(l) +
+  tm_lines(col = "all", lwd = 2, palette = "RdBu", breaks = c(0, 100, 1000, 2000))
+
+readr::write_csv(st_set_geometry(g, NULL), "../data/parks-walk.csv")
+plot(g)
+plot(g_joined["foot"])
+g_poly_lad$walk00 = g_joined$foot
+summary(g_joined)
+nrow(g_walk)
+nrow(g_poly_lad)
 row.names(g_walk)
 g_walk$gml_id = g_poly_lad$gml_id
 plot(g_walk, add = T)
 g_df = st_set_geometry(g_poly_lad, NULL)
 g_df = left_join(g_df, g_walk)
+
+
+# geo_bufferag = function(x = l, y = g_poly_lad, var = "foot", dist = 200, fun = sum) {
+#   var_quo = quo(var)
+#   buff = geo_projected(x, st_buffer, dist = dist)
+#   x_agg = aggregate(buff[var], g_poly_lad, sum)
+#   g = st_join(x, x_agg) %>% 
+#     group_by()
+#     summarise(sum(!!var_quo))
+#   g
+# }
