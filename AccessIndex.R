@@ -1,13 +1,21 @@
-AccessIndex <- function(ParkCoordinates, AreasData)
+AccessIndex <- function(ParkCoordinates, AreasData, newcastle)
 {
   
-  AreasData$AccessibilityIndex <- NULL
-  
-  for (i in seq(1,length(AreasData)))
+  for (j in seq(1,nrow(parks.coords)))
   {
-    AreasData$AccessibilityIndex[i] <- AreasData$Population[i] *exp(-dist(data.frame(x1 = ParkCoordinates, x2 = c(AreasData$x, AreasData$y))))
+    
+    ParkCoordinates <- parks.coords[j,]
+      
+    for (i in seq(1,length(AreasData)))
+    {
+      Coords <- newcastle.coords[i,]
+      IndividualParkIndex[i] <- as.numeric(newcastle$All.usual.residents[i]) *exp(-dist(rbind(ParkCoordinates,Coords))/1000)
+    }
+    
+    ParkAccessibilityIndexVector[j] <- sum(IndividualParkIndex)
+    
   }
   
-  return(sum(AreasData$AccessibilityIndex))
+  return(ParkAccessibilityIndexVector)
   
 }
