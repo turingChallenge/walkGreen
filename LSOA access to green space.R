@@ -14,9 +14,10 @@ access.index <- rep(NA, nc.N)
 for (i in 1:nc.N) {
   e.dist <- sqrt((newcastle.coords[i,1] - parks.coords [,1])^2 + 
                    (newcastle.coords[i,2] - parks.coords [,2])^2)
+  e.dist <- e.dist[e.dist<500]
   access.index [i] <- new.pop$All.usual.residents [i] * sum(exp(-e.dist / 1000))
 }
-rank.access <- order(access.index)
+rank.access <- order(access.index, decreasing = T)
 order(access.index)
 
 newcastle$All.usual.residents
